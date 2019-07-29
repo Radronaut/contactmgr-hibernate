@@ -20,7 +20,25 @@ public class Contact {
     @Column
     private Long phone;
 
-    public Contact() {
+    // Default constructor for JPA
+    public Contact(){}
+
+    public Contact(ContactBuilder builder) {
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.email = builder.email;
+        this.phone = builder.phone;
+    }
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", phone=" + phone +
+                '}';
     }
 
     public int getId() {
@@ -63,14 +81,29 @@ public class Contact {
         this.phone = phone;
     }
 
-    @Override
-    public String toString() {
-        return "Contact{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", phone=" + phone +
-                '}';
+    public static class ContactBuilder {
+        private String firstName;
+        private String lastName;
+        private String email;
+        private Long phone;
+
+        public ContactBuilder(String firstName, String lastName) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+        }
+
+        public ContactBuilder withEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public ContactBuilder withPhone(Long phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public Contact build() {
+            return new Contact(this);
+        }
     }
 }
